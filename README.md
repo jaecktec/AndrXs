@@ -11,12 +11,7 @@ There are 4 major concepts to AndrXs:
 -   State: Class definition of the state
 -   Selects: State slice selectors
 
-```mermaid
-graph LR
-A((Fragment)) -- dispatch --> B((Action))
-B -- mutate--> D((Store))
-D -- select --> A
-```
+![concept graph](https://github.com/jaecktec/AndrXs/raw/master/graph_concept.png)
 
 # API
 Following will describe the API with some examples
