@@ -112,6 +112,15 @@ class UiState {
 }
 ```
  whenever you call `StateContext#setState` all `@Selector` annotations are evaluated. In case the result has changed, the respective `@Select` marked observables will be notified.
+ 
+In your Application we can now define an observable of type String with our `@Select` annotation:
+
+```
+@Select(selector = "ZooStateModel::currentZooCity")
+private lateinit var mCurrentZoo: Observable<String>
+```
+
+On calling `store.onCreate(this)` our observable gets initialized with the latest value from the store. 
 
 ## Actions
 Actions can either be thought of as a command which should trigger something to happen, or as the resulting event of something that has already happened.
