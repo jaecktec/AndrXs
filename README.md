@@ -30,7 +30,7 @@ allprojects {
 and add the dependencye to your app -> `build.gradle`
 ```
 dependencies {
-    implementation 'com.github.jaecktec:AndrXs:Tag'
+    implementation 'com.github.jaecktec:AndrXs:v0.0.1'
 }
 ```
 
