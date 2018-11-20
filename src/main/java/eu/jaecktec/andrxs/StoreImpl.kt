@@ -16,13 +16,13 @@ internal class StoreImpl : Store, StateValueChangedCallback {
     override fun addState(state: Any) {
         initialiseStore(state)
         selectors = state::class.functions.filterByAnnotation(Selector::class)
-            .map { func ->
-                val annotation = func.getAnnotation(Selector::class)!!
-                verifySelectorDoesNotExist(annotation)
-                val result = SelectorContextHolder.create(func, state)
-                result.updateCurrentValue(stateContexts)
-                result
-            }.plus(selectors)
+                .map { func ->
+                    val annotation = func.getAnnotation(Selector::class)!!
+                    verifySelectorDoesNotExist(annotation)
+                    val result = SelectorContextHolder.create(func, state)
+                    result.updateCurrentValue(stateContexts)
+                    result
+                }.plus(selectors)
     }
 
     override fun <T : Any> getState(stateClass: KClass<T>): T {
@@ -32,13 +32,14 @@ internal class StoreImpl : Store, StateValueChangedCallback {
     // select stuff
     override fun onCreate(obj: Any) {
         val objSelects = obj::class.memberProperties
-            .filterByAnnotation(Select::class)
-            .map { SelectContextHolder.create(it, obj) }
+                .filterByAnnotation(Select::class)
+                .map { SelectContextHolder.create(it, obj) }
 
         objSelects.forEach { select ->
             val selector = selectors.find { selector ->
                 selector.selectorName == select.selectorName
-            } ?: throw IllegalArgumentException("could not find a @Selector for name=${select.selectorName}")
+            }
+                    ?: throw IllegalArgumentException("could not find a @Selector for name=${select.selectorName}")
             select.subject.onNext(selector.currentValue)
         }
 
@@ -52,9 +53,9 @@ internal class StoreImpl : Store, StateValueChangedCallback {
     override fun dispatch(obj: Any) {
         val methods = stateHandler.flatMap { state ->
             state::class.members
-                .filterByAnnotation(Action::class)
-                .filter { it.getAnnotation(Action::class)!!.type == obj::class }
-                .map { DispatchContextHolder.create(it, state) }
+                    .filterByAnnotation(Action::class)
+                    .filter { it.getAnnotation(Action::class)!!.type == obj::class }
+                    .map { DispatchContextHolder.create(it, state) }
         }
 
         methods.forEach { holder ->
@@ -70,9 +71,9 @@ internal class StoreImpl : Store, StateValueChangedCallback {
                 m[this] = obj
             }
 
-            val a = mutableListOf(*holder.method.parameters.toTypedArray())
-            m.keys.forEach { a.remove(it) }
-            a.find { !it.isOptional }?.run {
+            holder.method.parameters.filter {
+                !m.keys.contains(it)
+            }.find { !it.isOptional }?.run {
                 throw IllegalArgumentException("Action method can\'t have required parameters except StateContext and Action Type")
             }
 
@@ -85,14 +86,14 @@ internal class StoreImpl : Store, StateValueChangedCallback {
         val stateAnnotation = state.getClassAnnotation(State::class)
 
         val primaryConstructor = stateAnnotation.model.primaryConstructor
-            ?: throw IllegalArgumentException("State.model needs a default constructor")
+                ?: throw IllegalArgumentException("State.model needs a default constructor")
 
         primaryConstructor.parameters.find { !it.isOptional }?.run {
             throw IllegalArgumentException("State.model constructor can't have required parameters")
         }
 
         val stateContext =
-            StateContext(primaryConstructor.callBy(mapOf()), this)
+                StateContext(primaryConstructor.callBy(mapOf()), this)
 
         stateContexts[stateAnnotation.model] = stateContext
         stateHandler.add(state)
@@ -126,6 +127,6 @@ internal class StoreImpl : Store, StateValueChangedCallback {
     private fun <T : Any> findStateContext(stateClass: KClass<T>): StateContext<T> {
         @Suppress("UNCHECKED_CAST")
         return stateContexts[stateClass] as StateContext<T>?
-            ?: throw IllegalArgumentException("requested type has no state")
+                ?: throw IllegalArgumentException("requested type has no state")
     }
 }
