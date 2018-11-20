@@ -117,17 +117,6 @@ internal class StoreImpl : Store, StateValueChangedCallback {
         }
     }
 
-    private fun computeContextValue(context: SelectorContextHolder): Any {
-        val methodParams = context.method.parameters
-        val instanceParam = methodParams.find { it -> it.kind == KParameter.Kind.INSTANCE }!!
-        val modelParam = methodParams.find { it.type.classifier == context.modelClass }!!
-        val m = mutableMapOf(
-            instanceParam to context.receiver,
-            modelParam to stateContexts[context.modelClass]!!.getState()
-        )
-        return context.method.callBy(m)!!
-    }
-
     private fun verifySelectorDoesNotExist(annotation: Selector) {
         selectors.find { it.selectorName == annotation.name }?.run {
             throw IllegalArgumentException("Selector ${annotation.name} needs to have an unique name")
