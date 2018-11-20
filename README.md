@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/jaecktec/AndrXs.svg)](https://jitpack.io/#jaecktec/AndrXs)
+
 # Welcome to AndrXs!
 
 ## Introduction
@@ -12,6 +14,25 @@ There are 4 major concepts to AndrXs:
 -   Selects: State slice selectors
 
 ![concept graph](https://github.com/jaecktec/AndrXs/raw/master/graph_concept.png)
+
+# Installation
+The library is currently available on **JitPack**
+
+extend your root `build.gradle` with:
+```
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+and add the dependencye to your app -> `build.gradle`
+```
+dependencies {
+    implementation 'com.github.jaecktec:AndrXs:Tag'
+}
+```
 
 # API
 Following will describe the API with some examples
