@@ -4,10 +4,13 @@ buildscript {
         mavenCentral()
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+
     }
 }
 
@@ -17,9 +20,13 @@ plugins {
 
 apply plugin: 'com.android.library'
 
+apply plugin: 'com.github.dcendents.android-maven'  
+
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+
+ group='com.github.Jaecktec'
 
 android {
     compileSdkVersion 28
