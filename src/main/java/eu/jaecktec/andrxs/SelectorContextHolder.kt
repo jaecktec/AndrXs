@@ -4,7 +4,6 @@ import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
-import kotlin.reflect.full.primaryConstructor
 
 internal data class SelectorContextHolder(
     val method: KCallable<*>,
@@ -21,7 +20,7 @@ internal data class SelectorContextHolder(
                 receiver = receiver,
                 method = func,
                 modelClass = func.parameters.find { it.kind == KParameter.Kind.VALUE }!!.type.classifier as KClass<out Any>,
-                currentValue = (func.returnType.classifier as KClass<*>).primaryConstructor!!.callBy(mapOf())
+                currentValue = Any()
             )
 
         }
