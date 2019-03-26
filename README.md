@@ -34,6 +34,23 @@ dependencies {
 }
 ```
 
+However my favorite is adding the project as submodule (because you can direcly apply changes and help me creating a great library) 
+
+1) make sure you have initialized your local git repository with `git init` 
+2) then excecute `git submodule add git@github.com:jaecktec/AndrXs.git` 
+3) edit your `settings.gradle` to contain `include ':app', ':AndrXs'`
+4) add `implementation project(':AndrXs')` to your app dependencies (app/build.gradle)
+
+You can find a sample project here: https://github.com/jaecktec/AndrXsExample
+
+# Getting started
+1) Create a Store
+2) Create a State and State Model
+3) Add a `@Selector` to your State
+4) Register your states
+5) use `@Select` to subscribe to state changes
+6) $$$$$$$
+
 # API
 Following will describe the API with some examples
 
@@ -69,6 +86,29 @@ class MainApplication : Application() {
 
 }
 ```
+
+## Enable AndrXs in your Context: 
+You need to call the Store lifecycle hooks in order to make andrxs work properly. The current version requires the onStart and onDestroy livecycle. 
+
+```
+class MainActivity : AppCompatActivity() {
+    private val mStore: Store by lazy(LazyThreadSafetyMode.NONE) {
+        MainApplication.getAppContext().getStore()
+    }
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mStore.onCreate(this)
+    }
+    
+    override fun onDestroy() {
+	mStore.onDestroy(this)
+        super.onDestroy()
+    }
+}
+```
+
+
 ## Creating States
 
 ### State Model
@@ -91,6 +131,10 @@ class ZooState {}
 ```
 
 Remember, every state has to be registered on the `Store`!!!
+
+### Register a State
+go to your MainApplication file -> onCreate method and add yor store with
+`store.addState(ZooState()`
 
 ## Select
 Selections are helpers to select slices of the store. A valid setup consists of a `@Selector` and zero to infinite `@Select` annotations. The linking is archived through the name attributes.
