@@ -3,6 +3,9 @@
 # Welcome to AndrXs!
 
 ## Introduction
+**Disclaimer**
+The project is ment to try out the pattern and if it is handy to use. However this is not a production ready library even tough I tried to create reliable code. Feel free to play around with the library and let me know if you find it usefull. In case this turns out to be a valuable library I might rework the underlying code to be more performant. 
+
 This Library aims to decouple parts of your application that should work together.
 AndrXs is an android implementation / library havily influenced on [ngxs/store](https://ngxs.gitbook.io/ngxs). However AndrXs only supports a subset of the functionality.
 
